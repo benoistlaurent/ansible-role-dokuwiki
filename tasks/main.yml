@@ -1,0 +1,54 @@
+---
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install dokuwiki
+  import_tasks: download_dokuwiki.yml
+
+- name: Ensure installation directory exists
+  ansible.builtin.file:
+    path: "{{ dokuwiki_install_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Extract dokuwiki
+  ansible.builtin.unarchive:
+    src: "{{ dokuwiki_download_dest }}"
+    dest: "{{ dokuwiki_install_dir }}"
+    remote_src: true
+    extra_opts: "--strip-components=1"
+  when: download_dokuwiki.changed
+
+- name: Ensure dokuwiki user exists
+  ansible.builtin.user:
+    name: "{{ dokuwiki_user }}"
+    state: present
+    system: true
+
+- name: Ensure dokuwiki group exists
+  ansible.builtin.group:
+    name: "{{ dokuwiki_group }}"
+    state: present
+    system: true
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: "{{ dokuwiki_install_dir }}"
+    state: directory
+    recurse: true
+    owner: "{{ dokuwiki_user }}"
+    group: "{{ dokuwiki_group }}"
+
+- name: Copy .htaccess.dist to .htaccess
+  ansible.builtin.copy:
+    src: "{{ dokuwiki_install_dir }}/.htaccess.dist"
+    dest: "{{ dokuwiki_install_dir }}/.htaccess"
+    owner: "{{ dokuwiki_user }}"
+    group: "{{ dokuwiki_group }}"
+    mode: 0644
+    remote_src: true
+
+- name: Setup SELinux (RedHat)
+  import_tasks: selinux_config.yml
+  when: ansible_os_family == "RedHat"
+  notify: reload apache

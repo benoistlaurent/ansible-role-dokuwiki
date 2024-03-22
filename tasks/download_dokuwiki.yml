@@ -1,0 +1,15 @@
+---
+- name: Ensures destination directory exists
+  ansible.builtin.file:
+    path: "{{ dokuwiki_download_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Downloads Dokuwiki
+  ansible.builtin.get_url:
+    url: "{{ dokuwiki_download_url }}"
+    dest: "{{ dokuwiki_download_dest }}"
+    force: true
+    validate_certs: false
+    mode: 0644
+  register: download_dokuwiki

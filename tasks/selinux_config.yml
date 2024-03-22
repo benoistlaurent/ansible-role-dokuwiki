@@ -1,0 +1,45 @@
+---
+- name: Ensure policycoreutils-python-utils is installed
+  ansible.builtin.package:
+    name: policycoreutils-python-utils
+    state: present
+
+- name: Allow apache to modify files in the conf and data directories
+  community.general.sefcontext:
+    target: "{{ item }}"
+    setype: httpd_sys_rw_content_t
+    state: present
+  with_items:
+    - "{{ dokuwiki_install_dir }}/conf(/.*)?"
+    - "{{ dokuwiki_install_dir }}/data(/.*)?"
+
+- name: Allow apache to modify files relative to the context manager
+  community.general.sefcontext:
+    target: "{{ item }}"
+    setype: httpd_sys_rw_content_t
+    state: present
+  with_items:
+    - "{{ dokuwiki_install_dir }}/lib/plugins(/.*)?"
+    - "{{ dokuwiki_install_dir }}/lib/tpl(/.*)?"
+
+- name: Apply the SELinux context changes
+  ansible.builtin.command:
+    cmd: restorecon -Rv "{{ item }}"
+  with_items:
+    - "{{ dokuwiki_install_dir }}/conf"
+    - "{{ dokuwiki_install_dir }}/data"
+    - "{{ dokuwiki_install_dir }}/lib/plugins"
+    - "{{ dokuwiki_install_dir }}/lib/tpl"
+
+- name: Grant apache access to the network
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+
+- name: Allow apache to send email
+  ansible.posix.seboolean:
+    name: httpd_can_sendmail
+    state: true
+    persistent: true
+
