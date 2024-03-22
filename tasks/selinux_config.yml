@@ -42,4 +42,3 @@
     name: httpd_can_sendmail
     state: true
     persistent: true
-

@@ -1,10 +1,19 @@
 ---
 dokuwiki_install_dir: /var/www/html/dokuwiki
-dokuwiki_backup_dir: /var/www/html/dokuwiki_backup
 dokuwiki_download_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 dokuwiki_download_dir: /tmp
 dokuwiki_download_dest: /{{ dokuwiki_download_dir }}/dokuwiki-stable.tgz
 dokuwiki_user: apache
 dokuwiki_group: apache
 
-apache_restart_state: restarted
+dokuwiki_php_packages:
+  - php-json
+  - php-pcre
+  - php-session
+  - php-bz2
+  - php-zlib
+  - php-mbstring
+  - php-openssl
+  - php-gd
+  - php-intl
+  - php-xml

@@ -1,4 +1,17 @@
 ---
+- name: Selects PHP:7.4 (RedHat)
+  command: "dnf module enable -y php:7.4"
+  when: ansible_os_family == "RedHat"
+
+- name: Install php
+  include_role: 
+    name: geerlingguy.php
+
+- name: Install apache
+  include_role: 
+    name: geerlingguy.apache
+
+
 - name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 

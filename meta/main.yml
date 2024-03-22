@@ -1,0 +1,6 @@
+---
+# dependencies:
+#   - role: geerlingguy.apache
+#   - role: geerlingguy.php
+#     vars:
+#       php_extra_packages: "{{ dokuwiki_php_packages }}"
