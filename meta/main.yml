@@ -1,6 +1,9 @@
 ---
-# dependencies:
-#   - role: geerlingguy.apache
-#   - role: geerlingguy.php
-#     vars:
-#       php_extra_packages: "{{ dokuwiki_php_packages }}"
+ dependencies:
+  - name: geerlingguy.apache
+    src: https://github.com/geerlingguy/ansible-role-apache
+    version: 4.0.0
+  - name: geerlingguy.php
+    src: https://github.com/geerlingguy/ansible-role-php
+    version: 5.0.1
+
