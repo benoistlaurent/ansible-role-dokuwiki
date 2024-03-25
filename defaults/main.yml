@@ -1,5 +1,9 @@
 ---
-dokuwiki_install_dir: /var/www/html/dokuwiki
+apache_vhosts:
+  - servername: "dokuwiki.test"
+    documentroot: "/var/www/vhosts/dokuwiki"
+
+dokuwiki_install_dir: "{{ apache_vhosts[0].documentroot }}"
 dokuwiki_download_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 dokuwiki_download_dir: /tmp
 dokuwiki_download_dest: /{{ dokuwiki_download_dir }}/dokuwiki-stable.tgz
