@@ -1,21 +1,9 @@
 ---
-- name: Selects PHP:7.4 (RedHat)
-  command: "dnf module enable -y php:7.4"
-  when: ansible_os_family == "RedHat"
-
-- name: Install php
-  include_role: 
-    name: geerlingguy.php
-
-- name: Install apache
-  include_role: 
-    name: geerlingguy.apache
-
 
 - name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Install dokuwiki
+- name: Download dokuwiki
   import_tasks: download_dokuwiki.yml
 
 - name: Ensure installation directory exists
@@ -24,13 +12,18 @@
     state: directory
     mode: 0755
 
+- name: Check if dokuwiki is already installed
+  ansible.builtin.stat:
+    path: "{{ dokuwiki_install_dir }}/doku.php"
+  register: dokuwiki_installed
+
 - name: Extract dokuwiki
   ansible.builtin.unarchive:
     src: "{{ dokuwiki_download_dest }}"
     dest: "{{ dokuwiki_install_dir }}"
     remote_src: true
     extra_opts: "--strip-components=1"
-  when: download_dokuwiki.changed
+  when: download_dokuwiki.changed or not dokuwiki_installed.stat.exists
 
 - name: Ensure dokuwiki user exists
   ansible.builtin.user:
@@ -44,7 +37,7 @@
     state: present
     system: true
 
-- name: Set permissions
+- name: Creates dokuwiki install directory with correct permissions
   ansible.builtin.file:
     path: "{{ dokuwiki_install_dir }}"
     state: directory
@@ -65,3 +58,4 @@
   import_tasks: selinux_config.yml
   when: ansible_os_family == "RedHat"
   notify: reload apache
+

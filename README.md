@@ -29,11 +29,15 @@ The group that will own the Dokuwiki files.
 
 The PHP packages that need for Dokwiki to operate properly
 
+    dokuwiki_php_version: string
+
+The PHP version that will be installed.
+
+
 
 ## Dependencies
 
-- geerlingguy.apache
-- geerlingguy.php
+- benoistlaurent.ansible-role-php
 
 ## Example Playbook
 

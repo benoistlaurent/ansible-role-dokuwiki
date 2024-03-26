@@ -1,14 +1,13 @@
 ---
-apache_vhosts:
-  - servername: "dokuwiki.test"
-    documentroot: "/var/www/vhosts/dokuwiki"
-
-dokuwiki_install_dir: "{{ apache_vhosts[0].documentroot }}"
+dokuwiki_server_name: "dokuwiki.test"
+dokuwiki_install_dir: "/var/www/html/dokuwiki"
 dokuwiki_download_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 dokuwiki_download_dir: /tmp
 dokuwiki_download_dest: /{{ dokuwiki_download_dir }}/dokuwiki-stable.tgz
 dokuwiki_user: apache
 dokuwiki_group: apache
+
+dokuwiki_php_version: "7.4"
 
 dokuwiki_php_packages:
   - php-json
@@ -21,3 +20,4 @@ dokuwiki_php_packages:
   - php-gd
   - php-intl
   - php-xml
+

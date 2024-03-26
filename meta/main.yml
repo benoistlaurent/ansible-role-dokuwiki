@@ -3,7 +3,14 @@
   - name: geerlingguy.apache
     src: https://github.com/geerlingguy/ansible-role-apache
     version: 4.0.0
-  - name: geerlingguy.php
-    src: https://github.com/geerlingguy/ansible-role-php
-    version: 5.0.1
-
+    vars:
+      apache_vhosts:
+        - servername: "{{ dokuwiki_server_name }}"
+          documentroot: "{{ dokuwiki_install_dir }}"
+  - name: ansible-role-php
+    src: https://github.com/benoistlaurent/ansible-role-php
+    version: feature/redhat-php-version
+    vars:
+      php_default_version_redhat: "{{ dokuwiki_php_version }}"
+      php_default_version_debian: "{{ dokuwiki_php_version }}"
+  
