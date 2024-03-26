@@ -41,6 +41,39 @@ The PHP version that will be installed.
 
 ## Example Playbook
 
+```yaml
+---
+- hosts: all
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - role: geerlingguy.apache
+      vars:
+        apache_vhosts:
+          - servername: "{{ fqdn }}"
+            documentroot: "{{ server_root }}"
+    - role: ansible-role-dokuwiki
+      vars:
+        dokuwiki_server_name: "{{ server_name }}"
+        dokuwiki_install_dir: "{{ server_root }}"
+    - role: geerlingguy.firewall
+      vars:
+        firewall_allowed_tcp_ports:
+          - "80"
+          - "443"
+```
+
+*Inside `vars/main.yml`*:
+
+```yaml
+---
+server_name: "dokuwiki"
+fqdn: "{{ server_name }}.test"
+server_root: "/var/www/html/{{ server_name }}"
+```
+
 
 ## TODO
 
