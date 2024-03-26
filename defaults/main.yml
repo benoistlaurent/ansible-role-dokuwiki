@@ -1,6 +1,6 @@
 ---
-dokuwiki_server_name: "dokuwiki.test"
-dokuwiki_install_dir: "/var/www/html/dokuwiki"
+dokuwiki_server_name: "dokuwiki"
+dokuwiki_install_dir: "/var/www/html/{{ dokuwiki_server_name }}"
 dokuwiki_download_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 dokuwiki_download_dir: /tmp
 dokuwiki_download_dest: /{{ dokuwiki_download_dir }}/dokuwiki-stable.tgz
