@@ -1,0 +1,10 @@
+# <?php exit()?>
+#
+# Format:
+# login:passwordhash:Real Name:email:groups,comma,seperated
+
+{% if dokuwiki_users is defined %}
+{%   for user in dokuwiki_users %}
+{{ user.login }}:{{ user.password | hash('sha1') }}:{{ user.name }}:{{user.email }}:{{ user.groups | join(',') }}
+{%   endfor %}
+{% endif %}

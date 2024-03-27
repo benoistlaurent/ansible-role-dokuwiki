@@ -1,9 +1,8 @@
 ---
- dependencies:
+dependencies:
   - name: ansible-role-php
     src: https://github.com/benoistlaurent/ansible-role-php
     version: feature/redhat-php-version
     vars:
       php_default_version_redhat: "{{ dokuwiki_php_version }}"
       php_default_version_debian: "{{ dokuwiki_php_version }}"
-  

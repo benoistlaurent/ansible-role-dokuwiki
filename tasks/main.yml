@@ -59,3 +59,16 @@
   when: ansible_os_family == "RedHat"
   notify: reload apache
 
+- name: Deploy dokuwiki configuration
+  import_tasks: dokuwiki_config.yml
+
+- name: Remove install page
+  ansible.builtin.file:
+    path: "{{ dokuwiki_install_dir }}/install.php"
+    state: absent
+
+- name: Remove unnecessary plugins
+  ansible.builtin.file:
+    path: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item }}"
+    state: absent
+  with_items: "{{ dokuwiki_remove_plugins }}"

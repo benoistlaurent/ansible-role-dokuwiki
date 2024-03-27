@@ -1,0 +1,28 @@
+---
+- name: Deploy configuration templates
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ dokuwiki_user }}"
+    group: "{{ dokuwiki_group }}"
+    mode: 0644
+  with_items:
+    - src: "templates/local.php.j2"
+      dest: "{{ dokuwiki_install_dir }}/conf/local.php"
+    - src: "templates/plugins.local.php.j2"
+      dest: "{{ dokuwiki_install_dir }}/conf/plugins.local.php"
+
+# Read the YAML file containing the list of users
+- name: Deploy user configuration
+  block:
+    - name: Read user vault
+      include_vars: "{{ dokuwiki_users_vault }}"
+
+    - name: Deploy user configuration
+      ansible.builtin.template:
+        src: "templates/users.auth.php.j2"
+        dest: "{{ dokuwiki_install_dir }}/conf/users.auth.php"
+        owner: "{{ dokuwiki_user }}"
+        group: "{{ dokuwiki_group }}"
+        mode: 0644
+  when: dokuwiki_users_vault is defined

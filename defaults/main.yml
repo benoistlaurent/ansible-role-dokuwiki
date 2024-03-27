@@ -1,4 +1,19 @@
 ---
+dokuwiki_title: "My Wiki"
+dokuwiki_license: "cc-by-sa"
+dokuwiki_url_rewrite: "2"  # (0: none, 1: web server, 2: dokuwiki)
+dokuwiki_remove_plugins:
+  - "authad"
+  - "authldap"
+  - "authmysql"
+  - "authpdo"
+  - "authpgsql"
+  - "info"
+  - "popularity"
+
+# dokuwiki_disable_actions: "register"
+# dokuwiki_users: ""
+
 dokuwiki_server_name: "dokuwiki"
 dokuwiki_install_dir: "/var/www/html/{{ dokuwiki_server_name }}"
 dokuwiki_download_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
@@ -20,4 +35,3 @@ dokuwiki_php_packages:
   - php-gd
   - php-intl
   - php-xml
-

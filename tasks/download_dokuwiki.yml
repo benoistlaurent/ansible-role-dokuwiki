@@ -13,4 +13,3 @@
     validate_certs: false
     mode: 0644
   register: download_dokuwiki
-
