@@ -2,6 +2,10 @@
 dokuwiki_title: "My Wiki"
 dokuwiki_license: "cc-by-sa"
 dokuwiki_url_rewrite: "2"  # (0: none, 1: web server, 2: dokuwiki)
+
+# Plugins.
+
+## Plugins to remove (list[str]).
 dokuwiki_remove_plugins:
   - "authad"
   - "authldap"
@@ -11,9 +15,18 @@ dokuwiki_remove_plugins:
   - "info"
   - "popularity"
 
-# dokuwiki_disable_actions: "register"
-# dokuwiki_users: ""
+## Plugins to install (list[dict[str, str]]).
+# For each plugin, provide its name and the url of the source: {"name": string, "src": string}.
+dokuwiki_plugins: {}
 
+
+# Access Control List
+dokuwiki_acl_all: "1"   # all can read
+dokuwiki_acl_user: "4"  # user can create
+
+# dokuwiki_disable_actions: "register"
+
+# Server parameters
 dokuwiki_server_name: "dokuwiki"
 dokuwiki_install_dir: "/var/www/html/{{ dokuwiki_server_name }}"
 dokuwiki_download_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
@@ -22,8 +35,8 @@ dokuwiki_download_dest: /{{ dokuwiki_download_dir }}/dokuwiki-stable.tgz
 dokuwiki_user: apache
 dokuwiki_group: apache
 
+# PHP parameters
 dokuwiki_php_version: "7.4"
-
 dokuwiki_php_packages:
   - php-json
   - php-pcre

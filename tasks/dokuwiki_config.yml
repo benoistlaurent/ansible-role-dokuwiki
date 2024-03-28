@@ -11,6 +11,8 @@
       dest: "{{ dokuwiki_install_dir }}/conf/local.php"
     - src: "templates/plugins.local.php.j2"
       dest: "{{ dokuwiki_install_dir }}/conf/plugins.local.php"
+    - src: "templates/acl.auth.php.j2"
+      dest: "{{ dokuwiki_install_dir }}/conf/acl.auth.php"
 
 # Read the YAML file containing the list of users
 - name: Deploy user configuration

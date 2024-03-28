@@ -67,8 +67,7 @@
     path: "{{ dokuwiki_install_dir }}/install.php"
     state: absent
 
-- name: Remove unnecessary plugins
-  ansible.builtin.file:
-    path: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item }}"
-    state: absent
-  with_items: "{{ dokuwiki_remove_plugins }}"
+- name: Download and install plugins
+  import_tasks: dokuwiki_plugins.yml
+
+
