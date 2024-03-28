@@ -2,8 +2,6 @@
 
 Installs Dokuwiki on RedHat/CentOS/Rocky Linux and Debian/Ubuntu servers.
 
-## Requirements
-
 
 ## Role Variables
 
