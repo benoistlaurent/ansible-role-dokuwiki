@@ -54,21 +54,30 @@ The PHP version that will be installed.
         apache_vhosts:
           - servername: "{{ fqdn }}"
             documentroot: "{{ server_root }}"
+
     - role: ansible-role-dokuwiki
       vars:
         dokuwiki_server_name: "{{ server_name }}"
         dokuwiki_install_dir: "{{ server_root }}"
-    - role: geerlingguy.firewall
-      vars:
-        firewall_allowed_tcp_ports:
-          - "80"
-          - "443"
+ 
+  tasks:
+    - name: Properly setup firewall
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
 ```
 
 *Inside `vars/main.yml`*:
 
 ```yaml
 ---
+dokuwiki_title: "The Wiki"
+dokuwiki_plugins:
+  - name: "note"
+    src: "https://github.com/lpaulsen93/dokuwiki_note/archive/refs/tags/2020-06-28.tar.gz"
+
 server_name: "dokuwiki"
 fqdn: "{{ server_name }}.test"
 server_root: "/var/www/html/{{ server_name }}"
