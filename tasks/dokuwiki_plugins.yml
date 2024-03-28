@@ -4,14 +4,13 @@
     path: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item }}"
     state: absent
   with_items: "{{ dokuwiki_remove_plugins }}"
-  when: dokuwiki_remove_plugins is defined
 
 - name: Download and install plugins
   block:
     - name: Download plugins
       ansible.builtin.get_url:
         url: "{{ item.src }}"
-        dest: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}.tar.gz"
+        dest: "/tmp/{{ item.name }}.tar.gz"
       with_items: "{{ dokuwiki_plugins }}"
 
     - name: Create plugins directory
@@ -25,7 +24,7 @@
 
     - name: Extract plugins
       ansible.builtin.unarchive:
-        src: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}.tar.gz"
+        src: "/tmp/{{ item.name }}.tar.gz"
         dest: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}"
         owner: "{{ dokuwiki_user }}"
         group: "{{ dokuwiki_group }}"
@@ -33,6 +32,4 @@
         extra_opts: ["--strip-components=1"]
         mode: 0755
       with_items: "{{ dokuwiki_plugins }}"
-
-  when: dokuwiki_plugins is defined
 

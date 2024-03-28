@@ -1,0 +1,34 @@
+---
+- name: Remove templates
+  ansible.builtin.file:
+    path: "{{ dokuwiki_install_dir }}/lib/tpl/{{ item }}"
+    state: absent
+  with_items: "{{ dokuwiki_templates }}"
+
+- name: Download and install templates
+  block:
+    - name: Download templates
+      ansible.builtin.get_url:
+        url: "{{ item.src }}"
+        dest: "/tmp/{{ item.name }}.tar.gz"
+      with_items: "{{ dokuwiki_templates }}"
+
+    - name: Create template directories
+      ansible.builtin.file:
+        path: "{{ dokuwiki_install_dir }}/lib/tpl/{{ item.name }}"
+        state: directory
+        owner: "{{ dokuwiki_user }}"
+        group: "{{ dokuwiki_group }}"
+        mode: 0755
+      with_items: "{{ dokuwiki_templates }}"
+
+    - name: Extract templates
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ item.name }}.tar.gz"
+        dest: "{{ dokuwiki_install_dir }}/lib/tpl/{{ item.name }}"
+        owner: "{{ dokuwiki_user }}"
+        group: "{{ dokuwiki_group }}"
+        remote_src: true
+        extra_opts: ["--strip-components=1"]
+        mode: 0755
+      with_items: "{{ dokuwiki_templates }}"

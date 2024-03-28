@@ -69,5 +69,10 @@
 
 - name: Download and install plugins
   import_tasks: dokuwiki_plugins.yml
+  when: dokuwiki_plugins is defined
+
+- name: Download and install templates
+  import_tasks: dokuwiki_templates.yml
+  when: dokuwiki_templates is defined
 
 
