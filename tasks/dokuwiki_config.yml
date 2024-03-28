@@ -19,6 +19,7 @@
   block:
     - name: Read user vault
       include_vars: "{{ dokuwiki_users_vault }}"
+      when: dokuwiki_users_vault is defined
 
     - name: Deploy user configuration
       ansible.builtin.template:
@@ -27,4 +28,3 @@
         owner: "{{ dokuwiki_user }}"
         group: "{{ dokuwiki_group }}"
         mode: 0644
-  when: dokuwiki_users_vault is defined
