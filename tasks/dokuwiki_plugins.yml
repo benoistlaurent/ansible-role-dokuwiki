@@ -5,31 +5,17 @@
     state: absent
   with_items: "{{ dokuwiki_remove_plugins }}"
 
-- name: Download and install plugins
-  block:
-    - name: Download plugins
-      ansible.builtin.get_url:
-        url: "{{ item.src }}"
-        dest: "/tmp/{{ item.name }}.tar.gz"
-      with_items: "{{ dokuwiki_plugins }}"
+- name: Download and install plugins (using git)
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}"
+    version: "{{ item.version }}"
+  with_items: "{{ dokuwiki_plugins }}"
 
-    - name: Create plugins directory
-      ansible.builtin.file:
-        path: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}"
-        state: directory
-        owner: "{{ dokuwiki_user }}"
-        group: "{{ dokuwiki_group }}"
-        mode: 0755
-      with_items: "{{ dokuwiki_plugins }}"
-
-    - name: Extract plugins
-      ansible.builtin.unarchive:
-        src: "/tmp/{{ item.name }}.tar.gz"
-        dest: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}"
-        owner: "{{ dokuwiki_user }}"
-        group: "{{ dokuwiki_group }}"
-        remote_src: yes
-        extra_opts: ["--strip-components=1"]
-        mode: 0755
-      with_items: "{{ dokuwiki_plugins }}"
-
+- name: Set ownership and permissions for plugins
+  ansible.builtin.file:
+    path: "{{ dokuwiki_install_dir }}/lib/plugins/{{ item.name }}"
+    owner: "{{ dokuwiki_user }}"
+    group: "{{ dokuwiki_group }}"
+    mode: 0755
+  with_items: "{{ dokuwiki_plugins }}"

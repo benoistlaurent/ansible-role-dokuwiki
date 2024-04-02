@@ -154,7 +154,8 @@ The PHP version that will be installed.
 dokuwiki_title: "The Wiki"
 dokuwiki_plugins:
   - name: "note"
-    src: "https://github.com/lpaulsen93/dokuwiki_note/archive/refs/tags/2020-06-28.tar.gz"
+    repo: "https://github.com/lpaulsen93/dokuwiki_note.git"
+    version: "2020-06-28"
 
 server_name: "dokuwiki"
 fqdn: "{{ server_name }}.test"

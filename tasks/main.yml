@@ -3,6 +3,15 @@
 - name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
+- name: Install packages required to extract plugins & templates
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - unzip
+    - tar
+    - git
+
 - name: Download dokuwiki
   import_tasks: download_dokuwiki.yml
 
